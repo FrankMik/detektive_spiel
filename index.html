@@ -1,0 +1,251 @@
+<!doctype html>
+<html lang="de"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Akte Mister Unhappy</title>
+<style>
+:root{--ink:#e9e1cc;--brass:#c59d4b;--unh:#e0569f;--ok:#3ddc84}
+*{box-sizing:border-box}
+html,body{margin:0}
+body{background:linear-gradient(#070b12,#101a26 60%,#1a2230);color:var(--ink);font:17px/1.55 "Trebuchet MS",system-ui,sans-serif;min-height:100vh;overflow-x:hidden}
+#alm{position:fixed;inset:0;background:#b3121f;opacity:0;z-index:6;pointer-events:none}
+#alm.on{animation:alf .9s ease-out}
+@keyframes alf{from{opacity:.4}to{opacity:0}}
+#moon{position:fixed;top:5%;right:8%;width:90px;height:90px;border-radius:50%;background:radial-gradient(circle at 40% 40%,#f4efd8,#b9b59c 70%);box-shadow:0 0 70px 20px #8fa5c244;opacity:.75;z-index:0}
+.fog{position:fixed;left:-50%;width:200%;height:40%;background:radial-gradient(ellipse at 30% 50%,#9fb3c433,transparent 60%),radial-gradient(ellipse at 75% 40%,#9fb3c42a,transparent 55%);z-index:1;pointer-events:none}
+#f1{bottom:0}#f2{bottom:22%}
+#castle{position:fixed;left:0;bottom:0;width:100%;height:32%;z-index:0;opacity:.9}
+#vig{position:fixed;inset:0;background:radial-gradient(ellipse at center,transparent 45%,#000b 100%);z-index:4;pointer-events:none}
+main{position:relative;z-index:3;max-width:640px;margin:0 auto;padding:16px 16px 90px}
+h1,h2{font-family:Georgia,serif;line-height:1.2;margin:.2em 0 .5em;text-shadow:0 2px 10px #000}
+h1{font-size:2.1rem}h2{font-size:1.4rem}
+.prog{font-size:.85rem;color:var(--brass);height:1.2em}
+.st{display:none}.st.on{display:block}
+.note{border-left:4px solid var(--unh);background:#0009;padding:10px 14px;margin:14px 0;font:.95rem/1.5 "Courier New",monospace}
+.note b{color:var(--unh)}
+.snd{position:fixed;top:8px;left:8px;z-index:9;background:#0008;color:var(--ink);border:1px solid #fff3;border-radius:6px;padding:4px 10px;font:inherit;font-size:.8rem;cursor:pointer}
+button.go{font:inherit;font-weight:700;padding:11px 20px;border:0;border-radius:8px;background:var(--brass);color:#2a1d08;cursor:pointer;margin:8px 6px 8px 0}
+.pm button{font:inherit;padding:6px 14px;border:0;border-radius:8px;background:#3a4a58;color:var(--ink);cursor:pointer}
+input[type=text]{font:inherit;padding:10px 12px;border-radius:8px;border:2px solid var(--brass);background:#0b1118;color:var(--ink);width:100%;max-width:340px}
+.msg{min-height:1.5em;color:#ffb3a7;margin:4px 0}.msg.g{color:var(--ok)}
+.eq{font:1.05rem "Courier New",monospace}
+/* UV */
+.uv{position:relative;height:500px;overflow:hidden;--x:-400px;--y:-400px;touch-action:none;border:2px solid #222;border-radius:6px;background:repeating-linear-gradient(0deg,#1b1620 0 28px,#0e0b12 28px 30px),#150f19;margin:12px 0}
+.uvt{position:absolute;inset:0;color:#dcb8ff;text-shadow:0 0 8px #a64dff;-webkit-mask-image:radial-gradient(circle 80px at var(--x) var(--y),#000 25%,transparent 100%);mask-image:radial-gradient(circle 80px at var(--x) var(--y),#000 25%,transparent 100%)}
+.uvt p{position:absolute;width:46%;margin:0;font:italic .86rem/1.35 Georgia,serif}
+.uv::after{content:"";position:absolute;inset:0;background:radial-gradient(circle 100px at var(--x) var(--y),#8c3cff44,transparent);pointer-events:none}
+/* cryptex */
+.cx{display:flex;justify-content:center;gap:6px;padding:14px 18px;margin:18px auto;width:max-content;max-width:100%;border-radius:34px;background:linear-gradient(#e6c97f,#8a6a2c 55%,#5a4119);box-shadow:0 8px 24px #000a;position:relative;transition:transform .8s}
+.w{display:flex;flex-direction:column;align-items:center;gap:2px}
+.w b{display:block;width:44px;height:50px;line-height:50px;background:#f3e6c4;color:#3b2a14;font:700 28px Georgia,serif;text-align:center;border-radius:6px;box-shadow:inset 0 0 8px #0005}
+.w button{width:44px;height:28px;border:0;border-radius:6px;background:#3b2a14;color:#f3e6c4;cursor:pointer}
+.cx.open{transform:translateX(22px)}
+.lamp{display:inline-block;width:13px;height:13px;border-radius:50%;background:#26402f;vertical-align:middle;margin:0 4px}
+.lamp.on{background:var(--ok);box-shadow:0 0 12px var(--ok)}
+/* radio */
+.radio{background:linear-gradient(#3a3f33,#22261f);border:3px solid #55594a;border-radius:12px;padding:16px;text-align:center;box-shadow:0 8px 20px #000a}
+#rl{display:inline-block;width:46px;height:46px;border-radius:50%;background:#3b1a10;border:3px solid #111;margin:6px}
+#rl.on{background:#ffb347;box-shadow:0 0 30px 10px #ff9a2f}
+table.mc{border-collapse:collapse;font:.85rem "Courier New",monospace;margin:8px 0}table.mc td{padding:2px 12px 2px 0}
+.sl{display:grid;grid-template-columns:repeat(3,1fr);gap:3px;width:min(100%,330px);aspect-ratio:1;margin:12px auto;background:#000;padding:3px;border-radius:6px}.sl button{border:0;padding:0;border-radius:3px;cursor:pointer;background-size:300% 300%}.sl .e{background:#0a0f16;background-image:none!important;cursor:default}
+.pv{flex:none;width:96px;height:96px;border-radius:6px;background-size:100% 100%;border:2px solid #fff3}.sl .sel{outline:4px solid #e0569f;outline-offset:-4px;filter:brightness(1.25)}
+/* wires */
+.box{background:linear-gradient(#2b2f35,#1a1d22);border:3px solid #444;border-radius:10px;padding:16px 14px;margin:12px 0;box-shadow:0 8px 20px #000a}
+.box .led{float:right}
+.wire{display:block;width:100%;height:26px;border:0;margin:14px 0;padding:0;background:none;cursor:pointer;position:relative}
+.wire::before{content:"";position:absolute;left:0;right:0;top:9px;height:9px;border-radius:5px;background:var(--c);box-shadow:0 0 0 2px #0006,0 3px 6px #0008}
+.wire.cut::before{left:0;right:55%;box-shadow:none}
+.wire.cut::after{content:"";position:absolute;left:55%;right:0;top:9px;height:9px;border-radius:5px;background:var(--c);opacity:.5;transform:rotate(6deg)}
+.wire.cut span{position:absolute;left:44%;top:0;font-size:1.2rem}
+/* paper */
+.pw{display:none;overflow:hidden;padding:16px 8px;filter:drop-shadow(0 10px 14px #000);margin:14px 0;color:#3a2410}
+.pw.show{display:block}
+.paper{padding:26px 26px 18px;font:italic 1.12rem/1.65 Georgia,serif;background:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='300' height='300'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='.035' numOctaves='5'/><feColorMatrix values='0 0 0 0 .42 0 0 0 0 .27 0 0 0 0 .1 0 0 0 1.2 -.4'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>"),radial-gradient(ellipse at 50% 50%,transparent 50%,#5a320b99 100%),radial-gradient(circle at 20% 80%,#8a5a2088,transparent 25%),#dcc48f;clip-path:polygon(0 2%,6% 0,14% 1.5%,25% 0,38% 1%,52% 0,66% 1.5%,80% 0,93% 1%,100% 2%,99% 25%,100% 50%,98.5% 75%,100% 98%,90% 100%,76% 98.5%,60% 100%,45% 98.5%,30% 100%,15% 98.5%,5% 100%,0 97%,1.5% 70%,0 45%,1% 20%)}
+.paper strong{font-style:normal;font-size:1.22rem}
+.paper button.go{background:#3b2a14;color:#ecdcb0}
+.a1.show{animation:r1 1.8s cubic-bezier(.2,.8,.3,1)}
+.a2.show{animation:r2 2s ease-out}
+.a3.show{animation:r3 2.4s ease-out}
+.a4.show{animation:r4 1.6s cubic-bezier(.3,1.4,.5,1)}
+.a5.show{animation:r5 2.6s ease-out}
+@keyframes r1{from{transform:translateY(110vh) rotate(-12deg)}60%{transform:translateY(-16px) rotate(2deg)}}
+@keyframes r2{from{transform:translateY(80vh) scale(.2) rotate(600deg);opacity:0}}
+@keyframes r3{from{transform:translateY(60vh);opacity:0}40%{transform:translateY(30vh) rotate(-5deg);opacity:1}70%{transform:translateY(8vh) rotate(4deg)}}
+@keyframes r4{from{transform:translateY(120vh)}}
+@keyframes r5{from{transform:translateY(40vh) scale(.5);opacity:0;filter:drop-shadow(0 0 40px #fff) blur(6px)}}
+svg#tv{width:100%;max-width:330px;display:block;margin:10px auto;touch-action:none;user-select:none}
+svg#tv text{fill:#e9e1cc;font:11px "Trebuchet MS",sans-serif;text-anchor:middle;dominant-baseline:central;pointer-events:none}
+svg#tv.open #gh,svg#tv.open #gm{opacity:.15;transition:opacity 1.2s}
+.clk{display:block;width:160px;margin:6px auto}
+:focus-visible{outline:3px solid var(--unh);outline-offset:2px}
+@media (prefers-reduced-motion:reduce){*{animation:none!important}}
+</style></head><body>
+<div id="moon"></div>
+<svg id="castle" viewBox="0 0 1000 200" preserveAspectRatio="xMidYMax slice"><path fill="#04070c" d="M0 200V150h60v-20h20v20h60v-60h20v-20h20v20h20v60h80v-30h30v-40h20v-25l15 -15 15 15v25h20v40h30v30h120v-50h20v-30h25v-25l20 -20 20 20v25h25v30h20v50h110v-40h40v-20h20v20h40v40h60v-70h20v-30h20v30h20v70h110v-25h40v25h50v50z"/><g fill="#ffcc66"><rect class="win" x="215" y="118" width="6" height="10"/><rect class="win" x="470" y="95" width="6" height="10" style="animation-delay:1s"/><rect class="win" x="640" y="108" width="6" height="10" style="animation-delay:2s"/></g></svg>
+<div class="fog" id="f1"></div><div class="fog" id="f2"></div><div id="alm"></div><div id="vig"></div>
+<button class="snd" id="sb" aria-pressed="true">Ton: an</button>
+
+<!-- ======== HIER ANPASSEN ======== -->
+<script>
+const C={
+  ort:"Schloss Bergedorf, Bergedorfer Schloßstraße 4, 21029 Hamburg",
+  tag:14, monat:11, jahr:2026,  // Datum
+  std:10, min:20,               // Uhrzeit (24-Stunden)
+  zusage:"Zu-/Absagen bitte bis 9. November an +4917652702274"
+};
+</script>
+<!-- =============================== -->
+
+<main>
+<div class="prog" id="prog"></div>
+
+<section class="st">
+<h1>Akte: Mister Unhappy</h1>
+<div class="note" data-t="Muhahaha! Wer wagt es, meine Akte zu öffnen? Ich bin Mister Unhappy. In der letzten Nacht habe ich alle Informationen zu Amelias Geburtstagsfeier gestohlen: den Ort, das Datum und die Uhrzeit. Du bekommst sie nie zurück! Haha! Es sei denn, du löst meine fünf Fälle. Und das schaffst du nie."></div>
+<button class="go" id="start">Ermittlung starten</button>
+</section>
+
+<section class="st">
+<h2>Spur 1: Die Wand im Versteck</h2>
+<div class="note" data-t="Hihi, willkommen in meinem Versteck. Meine Geheimnisse schreibe ich mit UV-Tinte, kein normales Auge kann sie lesen. Aber vielleicht hast du ja eine UV-Lampe dabei? Haha! Fahr damit über die Wand, wenn du dich traust."></div>
+<div class="uv" id="uv"><div class="uvt">
+<p style="left:3%;top:1%">1. Je länger ich lebe, desto kürzer werde ich. Ich spende Licht, aber vor dem Wind habe ich Angst.</p>
+<p style="left:51%;top:17%;transform:rotate(2deg)">2. Ich falle vom Himmel, ohne mir wehzutun, und mache trotzdem alles nass.</p>
+<p style="left:3%;top:37%;transform:rotate(-2deg)">3. Ich habe eine Muschel, aber kein Meer. Ich höre alles, nur sprechen kann ich nicht.</p>
+<p style="left:51%;top:55%;transform:rotate(1.5deg)">4. Ich komme jeden Tag, bleibe aber nie. Sterne zeigen sich nur mit mir, und Verbrecher mögen mich.</p>
+<p style="left:3%;top:76%;transform:rotate(-1deg)">5. Ich antworte, obwohl ich keinen Mund habe. In Bergen und Höhlen bin ich zu Hause.</p>
+</div></div>
+<p>Die Anfangsbuchstaben der fünf Lösungen, der Reihe nach, öffnen das Cryptex:</p>
+<div class="cx" id="cx"></div>
+<div style="text-align:center"><span class="lamp" id="cl"></span><button class="go" id="cb">Cryptex öffnen</button></div>
+<div class="msg" id="cm" style="text-align:center"></div>
+<div class="pw a1" id="p1"><div class="paper"><strong>Argh!</strong><br>Das Cryptex ist offen?! Na gut, dann bekommst du eben deinen Ort zurück, haha:<br><strong id="ort"></strong><br><br><button class="go" data-next>Weiter</button></div></div>
+</section>
+
+<section class="st">
+<h2>Spur 2: Der Geheimsender</h2>
+<div class="note" data-t="Oh, nein ich habe mein Geheimsender verloren ! Damit gebe ich meinen Komplizen Befehle. Heute Nacht sende ich ein Codewort in den Äther. Hofentlich findest du Schnüflerin ihn nicht!"></div>
+<p>Kurzes Piepen ist ein Punkt (•), langes Piepen ein Strich (–). Die Zeichen erscheinen unter der Lampe, ein senkrechter Strich trennt die Buchstaben. Suche jede Gruppe im Morsealphabet. Das Codewort hat 5 Buchstaben.</p>
+<div class="radio"><span id="rl"></span><div class="eq" id="ms" style="font-size:1.8rem;letter-spacing:4px;min-height:2.4rem;white-space:pre-wrap"></div><button class="go" id="rp">Funkspruch abhören</button>
+<details open style="text-align:left"><summary>Morsealphabet</summary><table class="mc" id="mt"></table></details></div>
+<p style="margin-top:14px"><input type="text" id="mi" placeholder="Codewort" autocomplete="off" autocapitalize="characters"></p>
+<button class="go" id="mb">Codewort melden</button>
+<div class="msg" id="mm"></div>
+<div class="pw a2" id="p2"><div class="paper"><strong>Hmpf!</strong><br>Du hast mein Funkgerät gefunden?! Wo und Wie? Egal, lange hörst du nicht mehr zu. Jetzt kommt mein Porträt dran, und ich reiße es eben in Stücke!<br><br><button class="go" data-next>Weiter</button></div></div>
+</section>
+
+<section class="st">
+<h2>Spur 3: Das zerrissene Porträt</h2>
+<div class="note" data-t=" Dann habe ich eben mein eigenes Porträt zerrissen. Das Datum habe ich dahinter versteckt, und du wirst die Stücke nie wieder richtig zusammensetzen. Hehe!"></div>
+<div style="display:flex;gap:14px;align-items:center"><div class="pv" id="pv"></div><p style="margin:0">So sah mein Porträt aus. Tippe zwei Teile nacheinander an, dann tauschen sie die Plätze. Liegen alle 9 Teile richtig, ist das Bild wieder ganz.</p></div>
+<div class="sl" id="sl"></div>
+<div class="pw a3" id="p3"><div class="paper"><strong>Unmöglich!</strong><br>Mein Porträt ist wieder ganz! Na gut, hier ist dein Datum, du Schnüfflerin:<br><strong id="dat"></strong><br><br><button class="go" data-next>Weiter</button></div></div>
+</section>
+
+<section class="st">
+<h2>Spur 4: Die Alarmanlage</h2>
+<div class="note" data-t="Du nervst, du kleine Detektivein! Dann eben die Alarmanlage. Vier Kabel, und nur eine Reihenfolge ist richtig. Bei einem Fehler heult der Alarm! Ich verrate dir drei Dinge, weil ich so großzügig bin: Rot ist immer das Letzte. Blau kommt direkt nach Grün. Gelb ist nie das Erste. Haha!"></div>
+<div class="box"><span class="lamp led on" style="background:#e33;box-shadow:0 0 10px #e33"></span>
+<button class="wire" style="--c:#e02b2b" data-w="r" aria-label="rotes Kabel"><span></span></button>
+<button class="wire" style="--c:#2c6bff" data-w="b" aria-label="blaues Kabel"><span></span></button>
+<button class="wire" style="--c:#2fc24f" data-w="g" aria-label="grünes Kabel"><span></span></button>
+<button class="wire" style="--c:#f0c419" data-w="y" aria-label="gelbes Kabel"><span></span></button></div>
+<div class="msg" id="wm"></div>
+<div class="pw a4" id="p4"><div class="paper"><strong>Aaargh!</strong><br>Die Alarmanlage ist aus! Schon gut, die Tür zum Tresorraum ist offen. Aber den Tresor selbst knackst du nie! Hahaha!<br><br><button class="go" data-next>Weiter</button></div></div>
+</section>
+
+<section class="st">
+<h2>Spur 5: Der Tresor</h2>
+<div class="note" data-t="x"></div>
+<svg class="clk" id="ck" viewBox="-60 -60 120 120" role="img" aria-label="Stehengebliebene Wanduhr"></svg>
+<p id="part" style="text-align:center;margin:0 0 6px"></p>
+<svg id="tv" viewBox="-150 -150 300 300" role="img" aria-label="Tresor mit Stundenrad außen und Minutenrad innen"></svg>
+<div class="pm" style="text-align:center">Stunde <button data-r="h,-1">−</button> <button data-r="h,1">+</button> &nbsp; Minute <button data-r="m,-1">−</button> <button data-r="m,1">+</button></div>
+<div class="msg" id="tm" style="text-align:center"></div>
+<div class="pw a5" id="p5"><div class="paper"><strong>Neeein!</strong><br>Der Tresor ist offen! Hmpf, gut gemacht, du Detektivin. Amelias Geburtstagsfeier beginnt um<br><strong id="uhr"></strong><br><br><button class="go" data-next>Weiter</button></div></div>
+</section>
+
+<section class="st">
+<h1>Fall gelöst!</h1>
+<div class="note" data-t="Neeein! Du hast es geschafft! Alle Informationen sind zurück... Aber warte nur, ich komme wieder! Und beim nächsten Mal bin ich schlauer. Hahahaha!"></div>
+<div class="pw show a4"><div class="paper"><strong>Einladung zur Detektiv-Geburtstagsfeier</strong><br><br>Wo: <strong id="f1t"></strong><br>Wann: <strong id="f2t"></strong><br>Uhrzeit: <strong id="f3t"></strong><br><br>Bring Spaß und Spürsinn mit.<span id="zu"></span></div></div>
+</section>
+
+<script>
+const $=s=>document.querySelector(s),$$=s=>[...document.querySelectorAll(s)];
+let AC,on=true,drone;
+function snd(f,d=.12,t='sine',v=.15,at=0){if(!on)return;try{AC=AC||new(window.AudioContext||window.webkitAudioContext)();const o=AC.createOscillator(),g=AC.createGain(),s=AC.currentTime+at;o.type=t;o.frequency.value=f;g.gain.setValueAtTime(v,s);g.gain.exponentialRampToValueAtTime(.001,s+d);o.connect(g);g.connect(AC.destination);o.start(s);o.stop(s+d+.02)}catch(e){}}
+const ok=()=>[523,659,784,1047].forEach((f,i)=>snd(f,.2,'triangle',.18,i*.1)),bad=()=>snd(140,.25,'sawtooth',.1),clk=()=>snd(900,.03,'square',.06);
+function amb(){try{AC=AC||new(window.AudioContext||window.webkitAudioContext)();if(drone)return;const g=AC.createGain();g.gain.value=.025;g.connect(AC.destination);drone=[55,58.3,82].map(f=>{const o=AC.createOscillator();o.type='sine';o.frequency.value=f;o.connect(g);o.start();return o});drone.g=g}catch(e){}}
+$('#sb').onclick=()=>{on=!on;$('#sb').textContent='Ton: '+(on?'an':'aus');if(drone)drone.g.gain.value=on?.025:0};
+const p2=n=>String(n).padStart(2,'0'),norm=s=>s.trim().toUpperCase().replace(/Ä/g,'AE').replace(/Ö/g,'OE').replace(/Ü/g,'UE');
+const sts=$$('.st');let cur=0,tt;
+function type(el){clearInterval(tt);const t=el.dataset.t;let i=0;el.innerHTML='<b>Mister Unhappy:</b> <span></span><span style="visibility:hidden"></span>';const[a,b]=el.querySelectorAll('span');b.textContent=t;tt=setInterval(()=>{i+=2;a.textContent=t.slice(0,i);b.textContent=t.slice(i);if(i%6==0)snd(1400+Math.random()*300,.02,'square',.02);if(i>=t.length)clearInterval(tt)},28)}
+function go(i){cur=i;sts.forEach((e,k)=>e.classList.toggle('on',k===i));$('#prog').textContent=i>0&&i<6?'Spur '+i+' von 5':'';const n=sts[i].querySelector('.note');if(n)type(n);try{sessionStorage.k=i}catch(e){}scrollTo(0,0)}
+function reveal(id){ok();setTimeout(()=>{$(id).classList.add('show');$(id).scrollIntoView({behavior:'smooth',block:'center'})},600)}
+$$('[data-next]').forEach(b=>b.onclick=()=>go(cur+1));
+$('#start').onclick=()=>{amb();snd(80,.6,'sawtooth',.12);go(1)};
+
+/* 1 UV + Cryptex */
+const uv=$('#uv');uv.onpointermove=uv.onpointerdown=e=>{const b=uv.getBoundingClientRect();uv.style.setProperty('--x',e.clientX-b.left+'px');uv.style.setProperty('--y',e.clientY-b.top+'px')};
+const CODE="KRONE",cv=[3,9,14,20,7];
+function cxr(){$('#cx').innerHTML=cv.map((v,i)=>`<div class="w"><button data-i="${i}" data-d="1" aria-label="Buchstabe ${i+1} vor">▲</button><b>${String.fromCharCode(65+v)}</b><button data-i="${i}" data-d="-1" aria-label="Buchstabe ${i+1} zurück">▼</button></div>`).join('')}cxr();
+$('#cx').onclick=e=>{const b=e.target.closest('button');if(!b||$('#cx').classList.contains('open'))return;const i=+b.dataset.i;cv[i]=(cv[i]+ +b.dataset.d+26)%26;clk();cxr();$('#cm').textContent=''};
+$('#cb').onclick=()=>{if($('#cx').classList.contains('open'))return;if(cv.map(v=>String.fromCharCode(65+v)).join('')===CODE){$('#cx').classList.add('open');$('#cl').classList.add('on');$('#cm').className='msg g';$('#cm').textContent='Es klickt. Das Cryptex öffnet sich.';$('#ort').textContent=C.ort;reveal('#p1')}else{bad();$('#cm').className='msg';$('#cm').textContent='Das Cryptex klemmt. Mindestens ein Buchstabe stimmt noch nicht.'}};
+
+/* 2 Morse */
+const MC={A:".-",B:"-...",C:"-.-.",D:"-..",E:".",F:"..-.",G:"--.",H:"....",I:"..",J:".---",K:"-.-",L:".-..",M:"--",N:"-.",O:"---",P:".--.",Q:"--.-",R:".-.",S:"...",T:"-",U:"..-",V:"...-",W:".--",X:"-..-",Y:"-.--",Z:"--.."},MW="GEIST";
+const ks=Object.keys(MC);let rw='';for(let i=0;i<13;i++)rw+=`<tr><td>${ks[i]} ${MC[ks[i]]}</td><td>${ks[i+13]} ${MC[ks[i+13]]}</td></tr>`;$('#mt').innerHTML=rw;
+let playing=0;
+$('#rp').onclick=()=>{if(playing)return;playing=1;amb();$('#ms').textContent='';let t=0;const U=200;[...MW].forEach(c=>{[...MC[c]].forEach(x=>{const d=x=='.'?U:3*U;setTimeout(()=>{$('#rl').classList.add('on');snd(650,d/1000,'sine',.2);$('#ms').textContent+=x=='.'?'•':'–'},t);setTimeout(()=>$('#rl').classList.remove('on'),t+d);t+=d+U});setTimeout(()=>$('#ms').textContent+='  |  ',t);t+=3*U});setTimeout(()=>playing=0,t)};
+$('#mb').onclick=()=>{if(norm($('#mi').value)===MW){$('#mm').className='msg g';$('#mm').textContent='Codewort bestätigt!';reveal('#p2')}else{bad();$('#mm').className='msg';$('#mm').textContent='Das Codewort stimmt nicht. Hör noch einmal hin.'}};
+
+/* 3 Puzzle */
+const SVG=`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 300 300"><rect width="300" height="300" fill="#243447"/><path d="M0 250L120 0h40L40 300H0zM220 300L300 120v60l-50 120z" fill="#1a2636"/><circle cx="150" cy="170" r="95" fill="#d9c9a8"/><rect x="95" y="38" width="110" height="72" fill="#111"/><rect x="68" y="104" width="164" height="14" rx="4" fill="#111"/><rect x="95" y="90" width="110" height="12" fill="#e0569f"/><circle cx="118" cy="155" r="14" fill="#fff"/><circle cx="182" cy="155" r="14" fill="#fff"/><circle cx="121" cy="160" r="6" fill="#111"/><circle cx="179" cy="160" r="6" fill="#111"/><path d="M98 133L138 146M202 133L162 146" stroke="#111" stroke-width="7"/><path d="M100 212Q150 186 200 212Q150 224 100 212z" fill="#111"/><path d="M118 244Q150 222 182 244" stroke="#111" stroke-width="6" fill="none"/><circle cx="60" cy="60" r="14" fill="#c59d4b"/><circle cx="245" cy="245" r="18" fill="#e0569f"/></svg>`;
+const IMG="url('data:image/svg+xml,"+encodeURIComponent(SVG).replace(/'/g,'%27')+"')";
+let ord,sdone=0;
+function shuf(){do{ord=[0,1,2,3,4,5,6,7,8];for(let i=8;i>0;i--){const j=Math.random()*(i+1)|0;[ord[i],ord[j]]=[ord[j],ord[i]]}}while(ord.some((t,i)=>t===i))}
+let sel=-1;
+function sr(){$('#sl').innerHTML=ord.map((t,p)=>`<button data-p="${p}" aria-label="Teil ${p+1}" class="${p===sel?'sel':''}" style="background-image:${IMG};background-position:${(t%3)*50}% ${(t/3|0)*50}%"></button>`).join('')}
+shuf();sr();$('#pv').style.backgroundImage=IMG;
+$('#sl').onclick=ev=>{const b=ev.target.closest('button');if(!b||sdone)return;const p=+b.dataset.p;clk();if(sel<0){sel=p}else{if(sel!==p)[ord[sel],ord[p]]=[ord[p],ord[sel]];sel=-1}sr();if(ord.every((t,i)=>t===i)){sdone=1;$('#dat').textContent=`${p2(C.tag)}.${p2(C.monat)}.${C.jahr}`;reveal('#p3')}};
+
+/* 4 Kabel */
+const ORD=['g','b','y','r'];let cut=[];
+$$('.wire').forEach(b=>b.onclick=()=>{if(cut.length==4||b.classList.contains('cut'))return;if(ORD[cut.length]===b.dataset.w){cut.push(b.dataset.w);b.classList.add('cut');b.querySelector('span').textContent='✂';snd(1800,.05,'square',.15);if(cut.length==4){$('#wm').className='msg g';$('#wm').textContent='Alarm abgeschaltet.';reveal('#p4')}}else{$('#alm').classList.remove('on');void $('#alm').offsetWidth;$('#alm').classList.add('on');[0,.25,.5,.75].forEach(t=>{snd(900,.12,'sawtooth',.15,t);snd(600,.12,'sawtooth',.15,t+.12)});$('#wm').className='msg';$('#wm').textContent='ALARM! Die Kabel verbinden sich wieder. Versuch es noch einmal.';cut=[];setTimeout(()=>{$$('.wire').forEach(w=>{w.classList.remove('cut');w.querySelector('span').textContent=''})},1300)}});
+
+/* 5 Uhr + Tresor */
+let ck='<circle r="56" fill="#e8dcc0" stroke="#5a4119" stroke-width="4"/>';
+for(let i=0;i<60;i++){const a=i*6*Math.PI/180,L=i%5?2:6;ck+=`<line x1="${Math.sin(a)*52}" y1="${-Math.cos(a)*52}" x2="${Math.sin(a)*(52-L)}" y2="${-Math.cos(a)*(52-L)}" stroke="#3a2410" stroke-width="${i%5?.6:1.6}"/>`}
+const OH=3,OM=20,T=(C.std*60+C.min+OH*60+OM)%720,ha=T/2,ma=(T%60)*6;
+ck+=`<line y2="-28" stroke="#3a2410" stroke-width="4" stroke-linecap="round" transform="rotate(${ha})"/><line y2="-44" stroke="#3a2410" stroke-width="2.4" stroke-linecap="round" transform="rotate(${ma})"/><circle r="3" fill="#3a2410"/><path d="M-30 -8l10 4-8 6 12 4" stroke="#444" fill="none" stroke-width=".8"/>`;
+for(let i=1;i<=12;i++){const a=i*Math.PI/6;ck+=`<text x="${Math.sin(a)*40}" y="${-Math.cos(a)*40}" font-size="8" text-anchor="middle" dominant-baseline="central" fill="#3a2410">${i}</text>`}$('#ck').innerHTML=ck;
+$('#part').textContent='Die Feier findet '+(C.std<12?'am Vormittag':C.std<18?'am Nachmittag':'am Abend')+' statt. Der Tresor zählt 24 Stunden.';
+const R={h:{n:24,r:0,v:(C.std+7)%24,dis:0},m:{n:60,r:0,v:(C.min+17)%60,dis:1}};
+let sv='<g id="gh"><circle r="146" fill="#1d2a35" stroke="#c59d4b" stroke-width="3"/>',sm='<g id="gm"><circle r="98" fill="#2b3e50" stroke="#c59d4b" stroke-width="2"/>';
+for(let i=0;i<24;i++){const a=i*15*Math.PI/180;sv+=`<text x="${Math.sin(a)*124}" y="${-Math.cos(a)*124}">${i}</text><line x1="${Math.sin(a)*146}" y1="${-Math.cos(a)*146}" x2="${Math.sin(a)*138}" y2="${-Math.cos(a)*138}" stroke="#c59d4b"/>`}
+for(let i=0;i<60;i++){const a=i*6*Math.PI/180,L=i%5?4:9;sm+=`<line x1="${Math.sin(a)*98}" y1="${-Math.cos(a)*98}" x2="${Math.sin(a)*(98-L)}" y2="${-Math.cos(a)*(98-L)}" stroke="#c59d4b"/>`;if(i%5==0)sm+=`<text x="${Math.sin(a)*74}" y="${-Math.cos(a)*74}">${i}</text>`}
+$('#tv').innerHTML=sv+'</g>'+sm+'</g><circle r="34" fill="#c59d4b"/><circle r="26" fill="#3b2a14"/><polygon points="-9,-152 9,-152 0,-134" fill="#e0569f"/><circle id="lh" cx="-128" cy="-128" r="8" fill="#26402f"/><circle id="lm" cx="128" cy="-128" r="8" fill="#26402f"/>';
+const tv=$('#tv'),stp=k=>360/R[k].n;
+const draw=k=>$('#g'+k).setAttribute('transform','rotate('+R[k].r+')');
+const val=k=>(((Math.round(-R[k].r/stp(k)))%R[k].n)+R[k].n)%R[k].n;
+['h','m'].forEach(k=>{R[k].r=-R[k].v*stp(k);draw(k)});
+function geo(e){const b=tv.getBoundingClientRect(),x=e.clientX-b.left-b.width/2,y=e.clientY-b.top-b.height/2;return{a:Math.atan2(y,x)*180/Math.PI,d:Math.hypot(x,y)*300/b.width}}
+let dr=null;
+tv.onpointerdown=e=>{const g=geo(e),k=g.d>100?'h':g.d>38?'m':null;if(!k||R[k].dis)return;dr={k,a:g.a,r:R[k].r};tv.setPointerCapture(e.pointerId)};
+tv.onpointermove=e=>{if(!dr)return;const k=dr.k;R[k].r=dr.r+(geo(e).a-dr.a);draw(k);const v=val(k);if(v!==R[k].v){R[k].v=v;clk()}};
+tv.onpointerup=()=>{if(!dr)return;const k=dr.k;dr=null;R[k].v=val(k);R[k].r=-R[k].v*stp(k);draw(k);chk()};
+$$('[data-r]').forEach(b=>b.onclick=()=>{const[k,d]=b.dataset.r.split(',');if(R[k].dis)return;R[k].v=(R[k].v+ +d+R[k].n)%R[k].n;R[k].r=-R[k].v*stp(k);draw(k);clk();chk()});
+function chk(){
+ if(!R.h.dis&&R.h.v===C.std){R.h.dis=1;R.m.dis=0;$('#lh').setAttribute('fill','#3ddc84');snd(660,.2,'triangle',.2);snd(990,.3,'triangle',.2,.15);$('#tm').className='msg g';$('#tm').textContent='Klick! Die Stunde stimmt. Jetzt das innere Rad.'}
+ else if(!R.m.dis&&R.m.v===C.min){R.m.dis=1;$('#lm').setAttribute('fill','#3ddc84');tv.classList.add('open');$('#tm').textContent='Der Tresor springt auf!';$('#uhr').textContent=`${p2(C.std)}:${p2(C.min)} Uhr`;reveal('#p5')}
+ else if(!R.h.dis||!R.m.dis){bad()}
+}
+
+sts[5].querySelector('.note').dataset.t=`Mein Tresor! Darin liegt die Uhrzeit eurer Feier, und die bekommt ihr nie! Meine Wanduhr hilft euch nicht weiter: Ich habe sie so gestellt, dass sie genau ${OH} Stunden und ${OM} Minuten vorgeht. Wer die richtige Zeit nicht kennt, kommt nie hinein. Hahaha!`;
+/* Ende */
+$('#f1t').textContent=C.ort;$('#f2t').textContent=`${p2(C.tag)}.${p2(C.monat)}.${C.jahr}`;$('#f3t').textContent=`${p2(C.std)}:${p2(C.min)} Uhr`;
+if(C.zusage)$('#zu').innerHTML='<br><br>'+C.zusage.replace(/</g,'&lt;');
+try{cur=Math.min(+sessionStorage.k||0,6)}catch(e){}
+go(cur);
+</script>
+</main></body></html>
